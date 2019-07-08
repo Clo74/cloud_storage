@@ -1,66 +1,85 @@
 import AbstractService from "./AbstractService.js";
 
- export default class TagsService extends AbstractService {
-	 constructor() {
-	     super();
-	     this.url = this.baseUrl + "/tags";
-	 }
-	 
-	    async all() {
-	        const data = await fetch(this.url, {
-	            method: 'get',
-	            headers: {
-	                'Accept': 'application/json'
-	            }
-	        })
-	                .then(response => response.json())
-	                .catch(res => console.error(res))
-	        return data;
-	    }   
+export default class TagsService extends AbstractService {
+    constructor() {
+        super();
+        this.url = this.baseUrl + "/tags";
+        this.token = localStorage.getItem("token");
+    }
 
-	    async delete(id) {
-	        return await fetch(this.url + "/" + id, {
-	            method: 'delete',
-	            headers: {
-	                'Accept': 'application/json'
-	            }
-	        })
-	            .catch(res => console.error(res))
-	    } 
-	
-	    async add(json) {
-	        await fetch(this.url,{
-	            method: 'post',
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'	                
-	            },
-	            body: JSON.stringify(json)
+    async all() {
 
-	        })
-	        	.then(response => response.json())
-	        	.then(data => {
-	        		this.res = data
-	        	})
-	        	.catch(error => console.error(error))
-	        return this.res;
-	    }
-	    
-	    async update(id ,json) {
-	        await fetch(this.url + "/" + id,{
-	            method: 'put',
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'	                
-	            },
-	            body: JSON.stringify(json)
+        const data = await fetch(this.url, {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': "Bearer " + localStorage.getItem("token")
+            }
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
+                .catch((res) => console.log(res))
+        return data;
+    }
 
-	        })
-        		.then(response => response.json())
-        		.then(data => {
-        		this.res = data
-        	})
-        		.catch(error => console.error(error))
-	        return this.res;
-	    }	
- }
+    async delete(id) {
+        return await fetch(this.url + "/" + id, {
+            method: 'delete',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': "Bearer " + localStorage.getItem("token")
+            }
+        })
+                .catch((res) => console.error(res))
+    }
+
+    async update(id, json) {
+        await fetch(this.url + "/" + id, {
+            method: 'put',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(json)
+
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
+                .catch((res) => console.log(res))
+        //return this.res;
+    }
+    
+    async add(json) {
+        await fetch(this.url, {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + localStorage.getItem("token")                
+            },
+            body: JSON.stringify(json)
+
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
+                .catch(error => console.error(error))
+        //return this.res;
+    }
+
+}

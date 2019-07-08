@@ -9,6 +9,7 @@ import com.cloud.business.TagStore;
 import com.cloud.entity.Tag;
 import java.net.URI;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.UriInfo;
  * @author tss
  */
 @Path("/tags")
+@RolesAllowed("users")
 public class TagsResources {
 
     @Inject
@@ -45,12 +47,13 @@ public class TagsResources {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Tag a, @Context UriInfo uriInfo) {
+    public Tag create(Tag a, @Context UriInfo uriInfo) {
         Tag saved = store.save(a);
-        URI uri = uriInfo.getAbsolutePathBuilder()
+        return saved;
+/*        URI uri = uriInfo.getAbsolutePathBuilder()
                 .path("/" + saved.getId())
                 .build();
-        return Response.ok(uri).build();
+        return Response.ok(uri).build();*/
 
     }
 

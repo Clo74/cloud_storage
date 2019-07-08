@@ -14,7 +14,7 @@ class PagDocumenti extends AbstractService {
         this.serviceTag = new TagsService();
         document.getElementById("butSendFile").onclick = this.sendFile
         this.file = document.getElementById("file");
-        
+
         this.titolo = document.getElementById("titolo");
 
         this.ArrCol = [];
@@ -23,7 +23,7 @@ class PagDocumenti extends AbstractService {
         this.elTags = "";
         this.arrOpt = [];
         this.data = [];
-        
+
 
         this.getAllData();
     }
@@ -32,21 +32,28 @@ class PagDocumenti extends AbstractService {
         this.service.all().
                 then((ArrJson) => {
                     if (ArrJson == "non auth") {
-                            window.location = this.firstPage;
+                        localStorage.clear();
+                        window.location = this.firstPage;
                     } else {
-                        if (ArrJson == false) { this.data = []} else {this.data = ArrJson}
-                    this.getTags();
-                }
+                        if (ArrJson == false) {
+                            this.data = []
+                        } else {
+                            this.data = ArrJson
+                        }
+                        this.getTags();
+                    }
                 });
     }
 
     getTags() {
+        this.arrOpt = [];
         this.serviceTag.all().
                 then((ArrJson) => {
-                    ArrJson.map((v) => {
-                        this.arrOpt["'" + v.id + "'"] = v.tag;
-                    });
-                    //this.arrOpt = ArrJson;
+                    if (ArrJson) {
+                        ArrJson.map((v) => {
+                            this.arrOpt["'" + v.id + "'"] = v.tag;
+                        });
+                    }
                     this.creaTabella();
                 });
     }
@@ -57,6 +64,13 @@ class PagDocumenti extends AbstractService {
         this.fields.map((col) => {
             switch (col) {
                 case "id":
+                    this.myJson = {
+                        data: col,
+                        title: col,
+                        type: "readonly"
+                    };
+                    break;
+                case "documento":
                     this.myJson = {
                         data: col,
                         title: col,
@@ -141,6 +155,7 @@ class PagDocumenti extends AbstractService {
                 .then(response => {
                     if (response.ok) {
                         success();
+                        location.reload();
                     } else {
                         error();
                     }
@@ -156,13 +171,14 @@ class PagDocumenti extends AbstractService {
 
     correggiJsonEdt(Json) {
         this.myArrJson = [];
-        Json.tags.map(v => {
-            this.myJson = {
-                id: v
-            };
-            this.myArrJson.push(this.myJson);
-        });
-
+        if (Json.tags) {
+            Json.tags.map(v => {
+                this.myJson = {
+                    id: v
+                };
+                this.myArrJson.push(this.myJson);
+            });
+        }
         return {
             titolo: Json.titolo,
             documento: Json.documento,
@@ -174,19 +190,20 @@ class PagDocumenti extends AbstractService {
         this.service.update(rowdata.id, this.correggiJsonEdt(rowdata))
                 .then((JsonRes) => {
                     success(JSON.stringify(JsonRes))
+                    location.reload();
                 });
     }
 
     sendFile() {
         var fd = new FormData();
-        
-              
-        fd.append("file", this.file.files[0], this.file.files[0].name );
+
+
+        fd.append("file", this.file.files[0], this.file.files[0].name);
         fd.append("titolo", this.titolo.value);
 
         this.service.sendFile(fd)
                 .then((response) => {
-                        location.reload();
+                    location.reload();
                 });
     }
 

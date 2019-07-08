@@ -8,23 +8,18 @@ package com.cloud.services;
 import com.cloud.business.DocumentoStore;
 import com.cloud.entity.Documento;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -50,20 +45,7 @@ public class DocumentiResources {
         return store.findById(id);
     }
 
-    /*@POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response uploadFile(
-            @FormDataParam("file") InputStream is,
-            @FormDataParam("file") FormDataContentDisposition cdh,
-            @FormDataParam("titolo") String titolo) {
-        
-        Documento doc = new Documento();
-        doc.setTitolo(titolo);
-        doc.setDocumento(cdh.getFileName());
-        store.save(doc, is);
-        return Response.status(200).build();
 
-    }    */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
