@@ -65,7 +65,9 @@ public class SecurityResources {
             @HeaderParam("usr") String usr, 
             @HeaderParam("pwd") String pwd) {
         Optional<Utente> p = store.login(usr, pwd);
+        
         p.ifPresent(a -> System.out.println(a.getNome()));
+        
         JsonObject token = Json.createObjectBuilder().add("token",
                 JWTManager.generateJWTString("token.json", p.get().getUser())).build();
         return p.isPresent() ? Response.ok().entity(token).build()

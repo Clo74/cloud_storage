@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -20,6 +22,9 @@ import javax.persistence.Table;
  * @author tss
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Condivisioni.getAll",query="select d from Condivisioni d WHERE d.utente.utente = :usr")
+})
 @Table(name="t_condivisioni")
 public class Condivisioni implements Serializable {
  

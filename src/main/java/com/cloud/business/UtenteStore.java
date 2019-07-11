@@ -63,7 +63,9 @@ public class UtenteStore {
     }
 
     public void remove(Integer id) {
+        System.out.println("utente da cancellare id --> " + id);
       Utente saved = findById(id);
+        System.out.println("utente da cancellare  --> " + saved);
         em.createQuery("delete from Documento e where e.utente :usr")
                 .setParameter("usr", saved)
                 .executeUpdate();

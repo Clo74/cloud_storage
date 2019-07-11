@@ -6,8 +6,10 @@
 package com.cloud.business;
 
 import com.cloud.Configuration;
+import com.cloud.entity.Condivisioni;
 import com.cloud.entity.Documento;
 import com.cloud.entity.Utente;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -37,15 +39,14 @@ public class DocumentoStore {
 
     @Inject
     Principal principal;
-    
+
     @Inject
     UtenteStore userStore;
-    
-        @Inject
-        JsonWebToken token;
-    
-    //Utente logged;
 
+    @Inject
+    JsonWebToken token;
+
+    //Utente logged;
     @PostConstruct
     public void init() {
         //logged = em.find(Utente.class, 1);
@@ -57,16 +58,16 @@ public class DocumentoStore {
     }
 
     public Documento saveUpd(Documento d) {
-        
+
         Optional<Utente> user = userStore.findByUsername(principal.getName());
         Utente logged = user.orElseThrow(() -> new EJBException("utente non trovato: " + principal.getName()));
         d.setUtente(logged);
         return em.merge(d);
     }
-    
+
     public Documento save(Documento d, InputStream is) {
         System.out.println("utente: " + principal.getName());
-                System.out.println("token user: " + token.getName());
+        System.out.println("token user: " + token.getName());
         //System.out.println("token email: " + token.getClaim(Claims.email.name()));
         Optional<Utente> user = userStore.findByUsername(principal.getName());
         Utente logged = user.orElseThrow(() -> new EJBException("utente non trovato: " + principal.getName()));
@@ -82,7 +83,7 @@ public class DocumentoStore {
     }
 
     public void remove(Integer id) {
-       Documento saved = findById(id);
+        Documento saved = findById(id);
         try {
             Files.delete(documentPath(saved.getDocumento()));
         } catch (IOException ex) {
@@ -92,7 +93,7 @@ public class DocumentoStore {
     }
 
     public List<Documento> findAll() {
-        System.out.println("utente --> " + principal.getName());
+        //System.out.println("utente --> " + principal.getName());
         return em.createQuery("select d from Documento d where d.utente.utente = :usr order by d.titolo", Documento.class)
                 .setParameter("usr", principal.getName())
                 .getResultList();
@@ -111,4 +112,14 @@ public class DocumentoStore {
                 + principal.getName() + "/" + name);
     }
 
+    public List<Condivisioni> findDocCond() {
+        return em.createNamedQuery("Condivisioni.getAll", Condivisioni.class)
+                .setParameter("usr", principal.getName())
+                .getResultList();
+
+    }
+
+    public File getFile(String fileName) {
+        return documentPath(fileName).toFile();
+    }
 }

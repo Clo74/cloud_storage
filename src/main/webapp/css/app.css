@@ -28,12 +28,12 @@ footer{
     justify-content: center;
 }
 
-.table-select{
+.table{
     cursor: pointer;
 }
-.table-select .row-select{
+.table .row-select{
     background: lightgray;
 }
-table.table-select tbody tr:hover{
+.table tbody tr:hover{
     background: lightyellow;
 }

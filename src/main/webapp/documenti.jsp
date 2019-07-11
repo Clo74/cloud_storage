@@ -19,7 +19,6 @@
                 <c:import url="./includes/menu.jsp" />
             </header>
             <article>
-                <!--<form enctype="multipart/form-data" method="POST" action="http://localhost:8080/cloud_st/resources/documenti">-->
                 <form>
                     <div class="form-group">
                         <input type="text" id="titolo" name="titolo" class="form-control" placeholder="Inserisci un titolo" style="width: 500px">
@@ -31,7 +30,10 @@
                         <input type="button" value="Carica File" class="btn btn-primary" id="butSendFile">
                     </div>
                 </form>
-
+                <hr>
+                <button id="butGetFile">Leggi il documento</button> <span id="nameDoc"></span>
+                <div id="contFile"></div>
+                <hr>
                 <div class="container" >
                     <table cellpadding="0" cellspacing="0" border="0"
                            class="dataTable table table-striped" id="documenti" style="width: 100%">

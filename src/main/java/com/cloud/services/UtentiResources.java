@@ -11,11 +11,14 @@ import com.cloud.entity.Documento;
 import com.cloud.entity.Utente;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -30,6 +33,7 @@ import javax.ws.rs.core.UriInfo;
  * @author tss
  */
 @Path("/utenti")
+@RolesAllowed("users")
 public class UtentiResources {
 
     @Inject
@@ -49,8 +53,24 @@ public class UtentiResources {
         return store.findById(id);
     }
 
+    @GET
+    @Path("/log")
+    @PermitAll
+    public Utente login(
+            @HeaderParam("usr") String usr, 
+            @HeaderParam("pwd") String pwd) {
+        
+        Optional<Utente> p = store.login(usr, pwd);
+        
+        System.out.println("utente loggato --> " + p.get());
+        
+        return p.get();
+    }
+        
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @PermitAll
     public Response create(Utente a, @Context UriInfo uriInfo) {
         Utente saved = store.save(a);
         URI uri = uriInfo.getAbsolutePathBuilder()
@@ -83,5 +103,5 @@ public class UtentiResources {
         return docStore.findByUt(id);
     }
 
-        
+
 }

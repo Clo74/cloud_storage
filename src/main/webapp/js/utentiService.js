@@ -11,9 +11,19 @@ export default class UtentiService extends AbstractService {
     constructor() {
         super();
         this.url = this.baseUrl + "/utenti";
+        this.token = "";
+        this.myJson = {};
+    }
+
+    leggiLocSt() {
+        if (!(localStorage.getItem(0) == null)) {
+            this.myJson = JSON.parse(localStorage.getItem(0));
+            this.token = this.myJson.token;
+        }
     }
 
     async all() {
+        this.leggiLocSt();
         const data = await fetch(this.url, {
             method: 'get',
             headers: {
@@ -21,14 +31,49 @@ export default class UtentiService extends AbstractService {
                 'Authorization': "Bearer " + this.token
             }
         })
-                .then((response) =>  {
-                    if (response.ok) {return response.json()} else { return "non auth"}
-            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
                 .catch((res) => console.log(res))
         return data;
     }
 
+    async readUtId(id) {
+        this.leggiLocSt();
+        const data = await fetch(this.url + "/" + id, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': "Bearer " + this.token
+            }
+        })
+                .then((response) => response.json())
+                .catch((res) => console.error(res))
+        return data;
+    }
+
+    async readUt(usr, pwd) {
+        this.leggiLocSt();
+        const data = await fetch(this.url + "/log", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'usr': usr,
+                'pwd': pwd,
+                'Authorization': "Bearer " + this.token
+            }
+        })
+                .then((response) => response.json())
+                .catch((res) => console.error(res))
+        return data;
+    }
+
     async delete(id) {
+        this.leggiLocSt();
         return await fetch(this.url + "/" + id, {
             method: 'delete',
             headers: {
@@ -40,6 +85,7 @@ export default class UtentiService extends AbstractService {
     }
 
     async add(json) {
+        this.leggiLocSt();
         await fetch(this.url, {
             method: 'post',
             headers: {
@@ -50,14 +96,19 @@ export default class UtentiService extends AbstractService {
             body: JSON.stringify(json)
 
         })
-                .then((response) =>  {
-                    if (response.ok) {return response.json()} else { return "non auth"}
-            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
                 .catch((res) => console.log(res))
         //return this.res;
     }
 
     async update(id, json) {
+        this.leggiLocSt();
         await fetch(this.url + "/" + id, {
             method: 'put',
             headers: {
@@ -68,11 +119,10 @@ export default class UtentiService extends AbstractService {
             body: JSON.stringify(json)
 
         })
-                .then(response => response.json())
-                .then(data => {
-                    this.res = data
+                .then((response) => {
+                    this.res = response.ok
                 })
-                .catch(error => console.error(error))
+                .catch((res) => console.log(res))
         return this.res;
     }
 

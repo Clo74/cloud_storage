@@ -15,14 +15,15 @@ class App {
     constructor() {
         this.service = new LoginService();
         this.token = "";
+        this.myJson = {};
         this.leggiToken();
     }
 
     leggiToken() {
-            this.token = localStorage.getItem("token");
-        if (this.token == "" || this.token == null) {
+        this.myJson = JSON.parse(localStorage.getItem(0));
+        if (this.myJson == null) {
             document.getElementById("divLogin").style = "display: flex"
-        }
+        } 
 
     }
 
@@ -32,7 +33,8 @@ class App {
 //document.querySelector("").ready(function () {
 new App();
 //});
-document.getElementById("btDisc").onclick = function(){
-    localStorage.removeItem("token");
+document.getElementById("btDisc").onclick = function () {
+    localStorage.clear();
+    //localStorage.removeItem("token");
     location.reload();
 };

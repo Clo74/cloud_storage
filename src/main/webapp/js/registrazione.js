@@ -6,10 +6,12 @@
 
 
 import UtentiService from "./utentiService.js";
+import AbstractService from "./AbstractService.js";
 
-class Registrazione {
+class Registrazione extends AbstractService {
 
     constructor() {
+        super();
         this.service = new UtentiService();
         this.utente = "";
         this.nome = "";
@@ -44,7 +46,7 @@ class Registrazione {
             "nome": this.nome,
             "pwd": this.password,
             "user": this.utente
-        }
+        };
     }
 
     sendDati() {
@@ -52,14 +54,16 @@ class Registrazione {
         this.buildJson();
         //chiamo il servizio
         this.service.add(this.myJson).
-                then((resp) => 
-                console.log(resp));
+                then((resp) => {
+                    window.location = this.firstPage;
+                });
+
     }
 
 }
 
-document.getElementById("btReg").onclick = function()
-   {
-       new Registrazione();
-   }
+document.getElementById("btReg").onclick = function ()
+{
+    new Registrazione();
+}
 

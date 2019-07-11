@@ -12,7 +12,9 @@ class PagDocumenti extends AbstractService {
         this.bindingAll();
         this.service = new DocumentiService();
         this.serviceTag = new TagsService();
-        document.getElementById("butSendFile").onclick = this.sendFile
+        document.getElementById("butSendFile").onclick = this.sendFile;
+        document.getElementById("butGetFile").onclick = this.getFile;
+        this.fileGet = document.getElementById("nameDoc");
         this.file = document.getElementById("file");
 
         this.titolo = document.getElementById("titolo");
@@ -23,8 +25,7 @@ class PagDocumenti extends AbstractService {
         this.elTags = "";
         this.arrOpt = [];
         this.data = [];
-
-
+        this.myTable;
         this.getAllData();
     }
 
@@ -134,7 +135,7 @@ class PagDocumenti extends AbstractService {
                 altEditor: true, // Enable altEditor
                 onDeleteRow: this.deleteRow,
                 onEditRow: this.editRow,
-//		    onAddRow: this.addRow,
+                //onAddRow: this.Carica,
                 buttons: [
                     {
                         extend: 'selected', // Bind to Selected row
@@ -146,7 +147,15 @@ class PagDocumenti extends AbstractService {
                         text: 'Edit',
                         name: 'edit'        // do not change name
                     }]
+            })
+
+            $('#documenti tbody').on('click', 'tr', function () {
+                //var data = $('#documenti').row(this).data();
+                //alert('You clicked on ' + data[0] + '\'s row');
+                //alert('You clicked on row' + this.cells[3].innerHTML);
+                document.getElementById("nameDoc").innerHTML = this.cells[3].innerHTML
             });
+
         }
     }
 
@@ -162,12 +171,12 @@ class PagDocumenti extends AbstractService {
                 });
     }
 
-    /*addRow(datatable, rowdata, success, error) {
-     this.service.add(rowdata)
-     .then((JsonRes) => {
-     success(JSON.stringify(JsonRes))
-     });
-     }*/
+    addRow(datatable, rowdata, success, error) {
+        /*this.service.add(rowdata)
+         .then((JsonRes) => {
+         success(JSON.stringify(JsonRes))
+         });*/
+    }
 
     correggiJsonEdt(Json) {
         this.myArrJson = [];
@@ -207,6 +216,22 @@ class PagDocumenti extends AbstractService {
                 });
     }
 
+    getFile() {
+        if (this.fileGet.innerHTML !== "") {
+            this.service.getFile(this.fileGet.innerHTML)
+                    .then((response) => {
+                        console.dir(response)
+                        var url = window.URL.createObjectURL(response);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = this.fileGet.innerHTML;
+                        document.getElementById("contFile").appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);                        
+                    });
+        }
+    }
+
     bindingAll() {
         this.getAllData = this.getAllData.bind(this);
         this.getTags = this.getTags.bind(this);
@@ -217,6 +242,7 @@ class PagDocumenti extends AbstractService {
         this.correggiJsonEdt = this.correggiJsonEdt.bind(this);
         this.editRow = this.editRow.bind(this);
         this.sendFile = this.sendFile.bind(this);
+        this.getFile = this.getFile.bind(this);
         /*this.addRow = this.addRow.bind(this);
          */
     }
@@ -224,6 +250,7 @@ class PagDocumenti extends AbstractService {
 
 $(document).ready(function () {
     new PagDocumenti();
+
 });
 
 /*document.addEventListener("submit", function(event){

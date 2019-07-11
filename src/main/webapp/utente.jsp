@@ -99,6 +99,6 @@
         <footer>
             <c:import url="./includes/footer.jsp"/>
         </footer>
-        <!--<script src="js/registrazione.js" type="module"></script>-->
+        <script src="js/utente.js" type="module"></script>
     </body>
 </html>
