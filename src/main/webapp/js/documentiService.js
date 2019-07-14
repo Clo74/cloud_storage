@@ -33,7 +33,7 @@ export default class DocumentiService extends AbstractService {
         })
                 .then((response) => {
                     if (response.ok) {
-                        return response.json()
+                        return response.json();
                     } else {
                         return "non auth"
                     }
@@ -47,7 +47,7 @@ export default class DocumentiService extends AbstractService {
         const data = await fetch(this.url + "/download?name=" + nomeDoc, {
             method: 'get',
             headers: {
-                    'Authorization': "Bearer " + this.token
+                'Authorization': "Bearer " + this.token
             }
         })
                 .then(resp => resp.blob())
@@ -58,21 +58,18 @@ export default class DocumentiService extends AbstractService {
         return data;
     }    
 
-    async allCond() {
+    async getFileCond(nomeDoc, utente) {
         this.leggiLocSt();
-        const data = await fetch(this.url + "/condivisi", {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': "Bearer " + this.token
-            }
-        })
-                .then((response) => {
-                    if (response.ok) {
-                        return response.json()
-                    } else {
-                        return "non auth"
+        const data = await fetch(this.url + "/download?name=" + nomeDoc
+                + "&usr=" + utente, {
+                    method: 'get',
+                    headers: {
+                        'Authorization': "Bearer " + this.token
                     }
+                })
+                .then(resp => resp.blob())
+                .then(blob => {
+                    return blob
                 })
                 .catch((res) => console.log(res))
         return data;
@@ -133,7 +130,47 @@ export default class DocumentiService extends AbstractService {
                 .catch(error => console.error(error))
         return this.res;
     }
-//                'Content-Type': 'multipart/form-data',
+    //condivisi
+    async allCond() {
+        this.leggiLocSt();
+        const data = await fetch(this.url + "/condivisi", {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': "Bearer " + this.token
+            }
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    } else {
+                        return "non auth"
+                    }
+                })
+                .catch((res) => console.log(res))
+        return data;
+    }
+
+    async sendFileCond(usr, idDoc) {
+        this.leggiLocSt();
+        const data = await fetch(this.url + "/condivisi?usr=" + usr + "&idDoc=" + idDoc, {
+            method: 'post',
+            headers: {
+                'Authorization': "Bearer " + this.token
+            },
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log("File condiviso");
+                        return response.json();
+                    } else {
+                        console.log("File non condiviso")
+                        return "Non auth"
+                    }
+                })
+                .catch(error => console.error(error))
+        return data;
+    }
 
     bindingAll() {
         this.sendFile = this.sendFile.bind(this);

@@ -105,13 +105,6 @@ public class DocumentoStore {
                 .getResultList();
     }
 
-    private Path documentPath(String name) {
-        System.out.println(Configuration.DOCUMENT_FOLDER
-                + principal.getName() + "/" + name);
-        return Paths.get(Configuration.DOCUMENT_FOLDER
-                + principal.getName() + "/" + name);
-    }
-
     public List<Condivisioni> findDocCond() {
         return em.createNamedQuery("Condivisioni.getAll", Condivisioni.class)
                 .setParameter("usr", principal.getName())
@@ -119,7 +112,35 @@ public class DocumentoStore {
 
     }
 
+    private Path documentPath(String name) {
+        return documentPath(name, principal.getName());
+    }
+
+    private Path documentPath(String name, String user) {
+        return Paths.get(Configuration.DOCUMENT_FOLDER
+                + user + "/" + name);
+    }
+
     public File getFile(String fileName) {
         return documentPath(fileName).toFile();
+    }
+
+    public File getFile(String fileName, String user) {
+        return documentPath(fileName, user).toFile();
+    }
+    
+       public Condivisioni saveCond(Integer idDoc, String usr) {
+           //cerco il documento con id
+        Documento docCond = findById(idDoc);
+        //cerco utente con user
+        Optional<Utente> user = userStore.findByUsername(usr);
+        Utente utente = user.orElseThrow(() -> new EJBException("utente non trovato: " + usr));
+        
+        Condivisioni condiv = new Condivisioni();
+        condiv.setUtente(utente);
+        condiv.setDoc(docCond);
+
+        return em.merge(condiv);
+
     }
 }

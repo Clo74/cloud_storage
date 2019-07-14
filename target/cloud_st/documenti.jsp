@@ -20,23 +20,41 @@
             </header>
             <article>
                 <form>
-                    <div class="form-group">
-                        <input type="text" id="titolo" name="titolo" class="form-control" placeholder="Inserisci un titolo" style="width: 500px">
-                    </div>
-                    <div class="form-group">
-                        <input type="file" id="file" name="file" class="form-control-file">
-                    </div>
-                    <div class="form-group">
-                        <input type="button" value="Carica File" class="btn btn-primary" id="butSendFile">
+                    <div class="row">
+                        <div class="col">
+                            <h3>Invia un documento nel cloud</h3>
+                            <div class="form-group">
+                                <input type="text" id="titolo" name="titolo" class="form-control" placeholder="Inserisci un titolo" >
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <input type="file" id="file" name="file" class="form-control-file allineati">
+
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="button" value="Carica File" class="btn btn-primary" id="butSendFile">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h3>Recupera un documento dal cloud</h3>
+                            <div class="form-group">
+                                <input type="text" id="nameDoc" class="form-control" placeholder="Selezione un documento dalla lista" >
+                            </div>     
+                            <div class="form-group">                            
+                                <input type="button" id="butGetFile" value="Carica il documento" class="btn btn-primary"/> 
+                            </div>
+                            <div id="contFile"></div>
+
+                        </div>
                     </div>
                 </form>
                 <hr>
-                <button id="butGetFile">Leggi il documento</button> <span id="nameDoc"></span>
-                <div id="contFile"></div>
-                <hr>
                 <div class="container" >
                     <table cellpadding="0" cellspacing="0" border="0"
-                           class="dataTable table table-striped" id="documenti" style="width: 100%">
+                           class="dataTable table table-striped" id="documenti" with="100%">
                     </table>
                 </div>
             </article>

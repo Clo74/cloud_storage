@@ -1,10 +1,11 @@
 /**
  * 
  */
-import DocumentiService from "./documentiService.js";
 
 import AbstractService from "./AbstractService.js";
-import {render, html} from "../lit-html/lit-html.js"
+import DocumentiService from "./documentiService.js";
+import UtentiService from "./utentiService.js";
+import {render, html} from "../lit-html/lit-html.js";
 
 class PagDocCondivisi extends AbstractService {
 
@@ -13,12 +14,6 @@ class PagDocCondivisi extends AbstractService {
         this.bindingAll();
         this.service = new DocumentiService();
 
-        document.getElementById("butSendFile").onclick = this.sendFile;
-        this.file = document.getElementById("file");
-
-        this.titolo = document.getElementById("titolo");
-        this.contSelect = document.getElementById("contSelect");
-
         this.ArrCol = [];
         this.myJson = {};
         this.myArrJson = [];
@@ -26,9 +21,27 @@ class PagDocCondivisi extends AbstractService {
         this.arrOpt = [];
         this.data = [];
         this.docUt = [];
+        this.docCond;
 
+        this.getCampi();
         this.getDocUt();
         this.getAllData();
+    }
+
+    getCampi() {
+        document.getElementById("butSendFile").onclick = this.sendFile;
+        document.getElementById("butGetFile").onclick = this.getFile;
+        
+        
+        this.file = document.getElementById("file");
+
+        this.titolo = document.getElementById("titolo");
+        this.contSelect = document.getElementById("contSelect");
+        this.usrCond = document.getElementById("inUtente");
+        this.fileGet = document.getElementById("docCond");
+        this.utPropFile = document.getElementById("utPropFile");
+        
+
     }
 
     //leggo i documenti dell'utente
@@ -48,17 +61,17 @@ class PagDocCondivisi extends AbstractService {
                     }
                 });
     }
-    
-    createRow(doc){
+
+    createRow(doc) {
         return html `
-            <option value=${doc.id}>${doc.titolo}</option>
+            <option value=${doc.id}>${doc.titolo} - ${doc.documento}</option>
         `
     }
     //crea la select con tutti i documenti dell'utente che si possono condividere
     caricaSelect() {
-        return html `<label for="selDoc">Elenco Documenti</label>
-            <select class="custom-select" id="selDoc">
-                <option selected>Choose...</option>
+        return html `
+            <select class="custom-select custom-select-lg mb-3" id="selDoc">
+                <option value=0 selected>Choose...</option>
                 ${this.docUt.map(doc => this.createRow(doc))}
             </select>`
     }
@@ -68,6 +81,7 @@ class PagDocCondivisi extends AbstractService {
         this.myJson = {};
         ArrJson.map((json) => {
             this.myJson = {
+                utente: json.doc.utente.user,
                 id: json.doc.id,
                 titolo: json.doc.titolo,
                 documento: json.doc.documento
@@ -76,6 +90,7 @@ class PagDocCondivisi extends AbstractService {
         })
 
     }
+
     //leggo la tabella condivisioni per caricare la tabella
     getAllData() {
         this.service.allCond().
@@ -98,28 +113,12 @@ class PagDocCondivisi extends AbstractService {
         const first = this.data[0];
         this.fields = Reflect.ownKeys(first);
         this.fields.map((col) => {
-            switch (col) {
-                case "id":
-                    this.myJson = {
-                        data: col,
-                        title: col,
-                        type: "readonly"
-                    };
-                    break;
-                case "documento":
-                    this.myJson = {
-                        data: col,
-                        title: col,
-                        type: "readonly"
-                    };
-                    break;
-                case "titolo":
-                    this.myJson = {
-                        data: col,
-                        title: col
-                    };
-                    break;
+            this.myJson = {
+                data: col,
+                title: col,
+                type: "readonly"
             }
+
             this.ArrCol.push(this.myJson);
         });
     }
@@ -135,90 +134,53 @@ class PagDocCondivisi extends AbstractService {
                 dom: 'Bfrtip', // Needs button container
                 select: 'single',
                 responsive: true,
-                altEditor: true, // Enable altEditor
-                onDeleteRow: this.deleteRow,
-                onEditRow: this.editRow,
-//		    onAddRow: this.addRow,
-                buttons: [
-                    {
-                        extend: 'selected', // Bind to Selected row
-                        text: 'Delete',
-                        name: 'delete'      // do not change name
-                    },
-                    {
-                        extend: 'selected', // Bind to Selected row
-                        text: 'Edit',
-                        name: 'edit'        // do not change name
-                    }]
+                altEditor: false, // Enable altEditor
+                buttons: []
+
+            });
+
+            $('#documenti tbody').on('click', 'tr', function () {
+                document.getElementById("docCond").value = this.cells[3].innerHTML
+                document.getElementById("utPropFile").value = this.cells[0].innerHTML
             });
         }
-    }
-
-    deleteRow(datatable, rowdata, success, error) {
-        this.service.delete(rowdata.id)
-                .then(response => {
-                    if (response.ok) {
-                        success();
-                        location.reload();
-                    } else {
-                        error();
-                    }
-                });
-    }
-
-    /*addRow(datatable, rowdata, success, error) {
-     this.service.add(rowdata)
-     .then((JsonRes) => {
-     success(JSON.stringify(JsonRes))
-     });
-     }*/
-
-    correggiJsonEdt(Json) {
-        this.myArrJson = [];
-        if (Json.tags) {
-            Json.tags.map(v => {
-                this.myJson = {
-                    id: v
-                };
-                this.myArrJson.push(this.myJson);
-            });
-        }
-        return {
-            titolo: Json.titolo,
-            documento: Json.documento,
-            tags: this.myArrJson
-        }
-    }
-
-    editRow(datatable, rowdata, success, error) {
-        this.service.update(rowdata.id, this.correggiJsonEdt(rowdata))
-                .then((JsonRes) => {
-                    success(JSON.stringify(JsonRes))
-                    location.reload();
-                });
     }
 
     sendFile() {
-        var fd = new FormData();
+        this.DocCond = document.getElementById("selDoc");
 
-
-        fd.append("file", this.file.files[0], this.file.files[0].name);
-        fd.append("titolo", this.titolo.value);
-
-        this.service.sendFile(fd)
+        this.service.sendFileCond(this.usrCond.value, this.DocCond.value)
                 .then((response) => {
+                    if (response == "Non auth") {
+                        alert("Documento non condiviso, controllare che il nome utente esista")
+                    }
                     location.reload();
                 });
+    }
+
+    getFile() {
+        if (this.fileGet.value !== "" && this.utPropFile.value !== "") {
+            this.service.getFileCond(this.fileGet.value, this.utPropFile.value)
+                    .then((response) => {
+                        console.dir(response)
+                        var url = window.URL.createObjectURL(response);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = this.fileGet.value;    
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);    
+                    });
+        }
     }
 
     bindingAll() {
 
         this.getAllData = this.getAllData.bind(this);
         this.creaTabella = this.creaTabella.bind(this);
-        this.deleteRow = this.deleteRow.bind(this);
-        this.correggiJsonEdt = this.correggiJsonEdt.bind(this);
-        this.editRow = this.editRow.bind(this);
         this.sendFile = this.sendFile.bind(this);
+        this.getFile = this.getFile.bind(this);
+        this.getCampi = this.getCampi.bind(this);
 
     }
 }
@@ -227,6 +189,3 @@ $(document).ready(function () {
     new PagDocCondivisi();
 });
 
-/*document.addEventListener("submit", function(event){
- event.preventDefault();
- });*/

@@ -150,10 +150,7 @@ class PagDocumenti extends AbstractService {
             })
 
             $('#documenti tbody').on('click', 'tr', function () {
-                //var data = $('#documenti').row(this).data();
-                //alert('You clicked on ' + data[0] + '\'s row');
-                //alert('You clicked on row' + this.cells[3].innerHTML);
-                document.getElementById("nameDoc").innerHTML = this.cells[3].innerHTML
+                document.getElementById("nameDoc").value = this.cells[3].innerHTML
             });
 
         }
@@ -217,14 +214,14 @@ class PagDocumenti extends AbstractService {
     }
 
     getFile() {
-        if (this.fileGet.innerHTML !== "") {
-            this.service.getFile(this.fileGet.innerHTML)
+        if (this.fileGet.value !== "") {
+            this.service.getFile(this.fileGet.value)
                     .then((response) => {
                         console.dir(response)
                         var url = window.URL.createObjectURL(response);
                         var a = document.createElement('a');
                         a.href = url;
-                        a.download = this.fileGet.innerHTML;
+                        a.download = this.fileGet.value;
                         document.getElementById("contFile").appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);                        

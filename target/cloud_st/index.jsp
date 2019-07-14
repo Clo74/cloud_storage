@@ -26,7 +26,7 @@
  
                         <form>
                             <input type="text" id="utente" class="fadeIn second" name="usr" placeholder="utente">
-                            <input type="text" id="password" class="fadeIn third" name="pwd" placeholder="password">
+                            <input type="password" id="password" class="fadeIn third" name="pwd" placeholder="password">
                             <input type="button" class="fadeIn fourth" value="Log In" id="tryLogin">
                             <span id="resp"></span>
                         </form>

@@ -20,25 +20,41 @@
             </header>
             <article>
                 <form>
+                    <div class="row">
+                        <div class="col">
+                            <h3>Condividi i tuoi documenti</h3>
+                            <div class="form-group" id="contSelect">
+                                
+                            </div>
+                            <div class="form-group">
+                                <label for="inUtente">Nome utente con cui vuoi condividere: </label>
+                                <input id="inUtente" placeholder="utente" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <input type="button" value="Condividi documento" class="btn btn-primary" id="butSendFile">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h3>Recupera un documento dal cloud</h3>
+                            <div class="form-group"> 
+                                <input type="text" id="utPropFile" readonly="readonly" class="form-control" placeholder="utente che ha condiviso con te..">
+                            </div>
+                            <div class="form-group"> 
+                                <label for="docCond">Seleziona un documento dalla lista: </label>
+                                <input type="text" id="docCond" readonly="readonly" class="form-control">
+                            </div>
+                            <input type="button" id="butGetFile" value="Carica il documento" class="btn btn-primary"/> 
 
-                    <div class="form-group" id="contSelect">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="inMail">Inserisci la mail dell'utente con cui vuoi condividere il documento: </label>
-                        <input id="inMail" placeholder="scrivi la mail">
-                    </div>
-                    <div class="form-group">
-                        <input type="button" value="Condividi documento" class="btn btn-primary" id="butSendFile">
+                        </div>     
                     </div>
                 </form>
                 <hr>
-                    
+
                 <div class="container" >
-                  <table cellpadding="0" cellspacing="0" border="0"
-                           class="dataTable table table-striped" id="documenti" style="width: 100%">
-                      <caption>Documenti condivisi con te</caption>
-                  </table>
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="dataTable table table-striped" id="documenti" with="100%">
+                        <caption>Documenti condivisi con te</caption>
+                    </table>
                 </div>
             </article>
             <footer>

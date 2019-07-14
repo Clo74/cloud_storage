@@ -5,6 +5,7 @@
  */
 package com.cloud.business;
 
+import com.cloud.entity.Condivisioni;
 import com.cloud.entity.Tag;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -32,8 +33,8 @@ public class CondivisioneStore {
         em.remove(findById(id));
     }
 
-    public List<Tag> findAll() {
-        return em.createQuery("select c from Condivisioni c", Tag.class)
+    public List<Condivisioni> findAll() {
+        return em.createQuery("select c from Condivisioni c", Condivisioni.class)
                 .getResultList();
     }
     

@@ -19,8 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -43,7 +41,7 @@ public class Documento implements Serializable {
     @Column(name="titolo")
     private String titolo;
 
-    @JsonbTransient
+    //@JsonbTransient
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_utente", referencedColumnName = "id_utente")
     private Utente utente;

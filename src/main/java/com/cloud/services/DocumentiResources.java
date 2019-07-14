@@ -19,6 +19,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -47,15 +48,14 @@ public class DocumentiResources {
         return store.findById(id);
     }
 
-    
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
             @FormDataParam("file") InputStream is,
             @FormDataParam("file") FormDataContentDisposition cdh,
             @FormDataParam("titolo") String titolo) {
-        System.out.println("file " + is + " titolo "+ titolo + " file name " + cdh.getFileName());
-        Documento doc = new Documento();    
+        System.out.println("file " + is + " titolo " + titolo + " file name " + cdh.getFileName());
+        Documento doc = new Documento();
         doc.setTitolo(titolo);
         //doc.setDocumento(cdh.getFileName());
         doc.setDocumento(cdh.getFileName());
@@ -77,24 +77,36 @@ public class DocumentiResources {
     public void delete(@PathParam("id") int id) {
         store.remove(id);
     }
+
+  
+    @GET
+    @Path("download")
+    public Response download(@QueryParam("name") String fileName, @QueryParam("usr") String usr) {
+        Response.ResponseBuilder response;
+        if (usr == null) {
+            response = Response.ok(store.getFile(fileName));
+        } else {
+            response = Response.ok(store.getFile(fileName, usr));
+        }
+        response.header("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+
+        return response.build();
+    }
+
     
-            //Documenti condivisi
-    
+    //Documenti condivisi
     @GET
     @Path("/condivisi")
     public List<Condivisioni> findDocCond() {
         return store.findDocCond();
     }
-    
-    @GET
-    @Path("download")
-    public Response download(@QueryParam("name") String fileName) {
-        
-        Response.ResponseBuilder response = Response.ok(store.getFile(fileName));
-    
-        response.header("Content-Disposition","attachment; filename=\"" + fileName + "\"");  
-    
-        return response.build();
-    }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/condivisi")
+    public Condivisioni create(@QueryParam("usr") String usr, @QueryParam("idDoc") Integer idDoc) {
+        Condivisioni saved = store.saveCond(idDoc, usr);
+        return saved;
+    }    
+    
 }
