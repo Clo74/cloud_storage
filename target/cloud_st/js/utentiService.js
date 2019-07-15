@@ -86,7 +86,7 @@ export default class UtentiService extends AbstractService {
 
     async add(json) {
         this.leggiLocSt();
-        await fetch(this.url, {
+        const data = await fetch(this.url, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -97,16 +97,18 @@ export default class UtentiService extends AbstractService {
 
         })
                 .then((response) => {
+                    return response.ok
+                })
+                .catch((res) => console.log(res))
+        return data
+    }
+/*                .then((response) => {
                     if (response.ok) {
                         return response.json()
                     } else {
                         return "non auth"
                     }
-                })
-                .catch((res) => console.log(res))
-        //return this.res;
-    }
-
+                })*/
     async update(id, json) {
         this.leggiLocSt();
         await fetch(this.url + "/" + id, {

@@ -28,8 +28,9 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <input type="file" id="file" name="file" class="form-control-file allineati">
-
+                                    <div class="form-group">                                    
+                                        <input type="file" id="file" name="file" class="form-control-file">
+                                    </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">

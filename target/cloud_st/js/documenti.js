@@ -221,7 +221,12 @@ class PagDocumenti extends AbstractService {
 
             this.service.sendFile(fd)
                     .then((response) => {
-                        location.reload();
+                        if (response) {
+                            location.reload();
+                        } else
+                        {
+                            alert("Documento non salvato")
+                        }
                     });
         }
     }

@@ -38,8 +38,8 @@ class Registrazione extends AbstractService {
 
     controlla() {
         //se tutto corretto mando al server
-        if (this.nome == "" || this.cognome == "" || 
-                this.utente == "" || this.mail == "" || 
+        if (this.nome == "" || this.cognome == "" ||
+                this.utente == "" || this.mail == "" ||
                 this.passord == "" || this.password2 == "") {
             alert("Inserire tutti i campi");
             return false;
@@ -48,7 +48,7 @@ class Registrazione extends AbstractService {
             alert("Le password non coincidono")
             return false;
         }
-       return true;
+        return true;
     }
 
     buildJson() {
@@ -68,7 +68,12 @@ class Registrazione extends AbstractService {
             //chiamo il servizio
             this.service.add(this.myJson).
                     then((resp) => {
-                        window.location = this.firstPage;
+                        if (resp) {
+                            window.location = this.firstPage;
+                        } else
+                        {
+                            alert("Registrazione non riuscita");
+                        }
                     });
         }
     }

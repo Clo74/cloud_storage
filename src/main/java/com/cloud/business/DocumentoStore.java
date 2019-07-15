@@ -65,15 +65,32 @@ public class DocumentoStore {
         return em.merge(d);
     }
 
+    public long folderSize(File directory) {
+        long length = 0;
+        for (File file : directory.listFiles()) {
+            if (file.isFile()) {
+                length += file.length();
+            } else {
+                length += folderSize(file);
+            }
+        }
+        return length;
+    }
+
     public Documento save(Documento d, InputStream is) {
         System.out.println("utente: " + principal.getName());
         System.out.println("token user: " + token.getName());
-        
+
         File f = new File(Configuration.DOCUMENT_FOLDER
                 + principal.getName());
+
+        long size = folderSize(f) / 1024 / 1024;
+
+        System.out.println("spazio occupato dalla directory: " + size);
         
-         System.out.println(Configuration.DOCUMENT_FOLDER
-                + principal.getName() + "/ space occupato: " + f.getTotalSpace() / 1024 / 1024);
+        if (size >= 1000) {
+           throw new EJBException("spazio disponibile nel cloud esaurito: " + principal.getName());
+        }
         
         Optional<Utente> user = userStore.findByUsername(principal.getName());
         Utente logged = user.orElseThrow(() -> new EJBException("utente non trovato: " + principal.getName()));
@@ -134,14 +151,14 @@ public class DocumentoStore {
     public File getFile(String fileName, String user) {
         return documentPath(fileName, user).toFile();
     }
-    
-       public Condivisioni saveCond(Integer idDoc, String usr) {
-           //cerco il documento con id
+
+    public Condivisioni saveCond(Integer idDoc, String usr) {
+        //cerco il documento con id
         Documento docCond = findById(idDoc);
         //cerco utente con user
         Optional<Utente> user = userStore.findByUsername(usr);
         Utente utente = user.orElseThrow(() -> new EJBException("utente non trovato: " + usr));
-        
+
         Condivisioni condiv = new Condivisioni();
         condiv.setUtente(utente);
         condiv.setDoc(docCond);

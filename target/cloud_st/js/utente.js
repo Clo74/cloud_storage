@@ -63,6 +63,8 @@ class App extends AbstractService {
                     .then(response => {
                         if (response.ok) {
                             alert("Utente eliminato con successo");
+                            localStorage.clear();
+                            window.location = this.firstPage;
                         } else {
                             alert("Eliminazione utente non riuscita");
                         }
