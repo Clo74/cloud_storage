@@ -46,6 +46,7 @@ public class Utente implements Serializable {
     @Column(name="e_mail")
     private String email;
 
+       
     public int getId() {
         return id;
     }
@@ -78,11 +79,11 @@ public class Utente implements Serializable {
         this.pwd = pwd;
     }
 
-    public String getUser() {
+    public String getUtente() {
         return utente;
     }
 
-    public void setUser(String utente) {
+    public void setUtente(String utente) {
         this.utente = utente;
     }
 
@@ -93,7 +94,7 @@ public class Utente implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -121,8 +122,10 @@ public class Utente implements Serializable {
 
     @Override
     public String toString() {
-        return "Utente{" + "id=" + id + ", cognome=" + cognome + ", nome=" + nome + ", pwd=" + pwd + ", email=" + email + '}';
+        return "Utente{" + "id=" + id + ", cognome=" + cognome + ", nome=" + nome + ", utente=" + utente + ", pwd=" + pwd + ", email=" + email + '}';
     }
+
+
     
     
     

@@ -68,7 +68,13 @@ public class DocumentoStore {
     public Documento save(Documento d, InputStream is) {
         System.out.println("utente: " + principal.getName());
         System.out.println("token user: " + token.getName());
-        //System.out.println("token email: " + token.getClaim(Claims.email.name()));
+        
+        File f = new File(Configuration.DOCUMENT_FOLDER
+                + principal.getName());
+        
+         System.out.println(Configuration.DOCUMENT_FOLDER
+                + principal.getName() + "/ space occupato: " + f.getTotalSpace() / 1024 / 1024);
+        
         Optional<Utente> user = userStore.findByUsername(principal.getName());
         Utente logged = user.orElseThrow(() -> new EJBException("utente non trovato: " + principal.getName()));
         d.setUtente(logged);

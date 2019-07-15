@@ -51,7 +51,7 @@ public class UtenteStore {
     
     public Utente save(Utente c) {
         Utente saved = em.merge(c);
-        Path path = Paths.get(Configuration.DOCUMENT_FOLDER + saved.getUser());
+        Path path = Paths.get(Configuration.DOCUMENT_FOLDER + saved.getUtente());
         if (Files.notExists(path, LinkOption.NOFOLLOW_LINKS)) {
             try {
                 Files.createDirectory(path);
@@ -71,7 +71,7 @@ public class UtenteStore {
                 .executeUpdate();
         em.remove(saved);
         try {
-            deleteDirectory(Paths.get(Configuration.DOCUMENT_FOLDER + saved.getUser()));
+            deleteDirectory(Paths.get(Configuration.DOCUMENT_FOLDER + saved.getUtente()));
         } catch (IOException ex) {
             throw new EJBException("remove user failed...");
         }

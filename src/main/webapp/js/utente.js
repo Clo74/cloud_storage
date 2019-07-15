@@ -23,7 +23,7 @@ class App extends AbstractService {
                 .then((JsonRes) => {
                     document.getElementById("name").value = JsonRes.nome;
                     document.getElementById("surname").value = JsonRes.cognome;
-                    document.getElementById("username").value = JsonRes.user;
+                    document.getElementById("username").value = JsonRes.utente;
                     document.getElementById("email").value = JsonRes.email;
                     document.getElementById("password").value = JsonRes.pwd;
                     document.getElementById("password_confirm").value = JsonRes.pwd;
@@ -39,9 +39,9 @@ class App extends AbstractService {
         this.utMod = {
             nome: document.getElementById("name").value,
             cognome: document.getElementById("surname").value,
-            user: document.getElementById("username").value,
+            utente: document.getElementById("username").value,
             email: document.getElementById("email").value,
-            pwd: document.getElementById("password").value
+            pwd: document.getElementById("password").value,
         }
     }
 

@@ -200,17 +200,30 @@ class PagDocumenti extends AbstractService {
                 });
     }
 
+    validateSize() {
+        var FileSize = this.file.files[0].size / 1024 / 1024; // in MB
+        if (FileSize > 100) {
+            alert('La dimensione del file non può eccedere i 100 MB');
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     sendFile() {
-        var fd = new FormData();
+
+        if (this.validateSize()) {
+            var fd = new FormData();
 
 
-        fd.append("file", this.file.files[0], this.file.files[0].name);
-        fd.append("titolo", this.titolo.value);
+            fd.append("file", this.file.files[0], this.file.files[0].name);
+            fd.append("titolo", this.titolo.value);
 
-        this.service.sendFile(fd)
-                .then((response) => {
-                    location.reload();
-                });
+            this.service.sendFile(fd)
+                    .then((response) => {
+                        location.reload();
+                    });
+        }
     }
 
     getFile() {
@@ -224,7 +237,7 @@ class PagDocumenti extends AbstractService {
                         a.download = this.fileGet.value;
                         document.getElementById("contFile").appendChild(a);
                         a.click();
-                        window.URL.revokeObjectURL(url);                        
+                        window.URL.revokeObjectURL(url);
                     });
         }
     }

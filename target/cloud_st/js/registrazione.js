@@ -17,12 +17,13 @@ class Registrazione extends AbstractService {
         this.nome = "";
         this.cognome = "";
         this.password = "";
+        this.password2 = "";
         this.mail = "";
         this.myJson = {};
         //leggo i campi a video
         this.getCampi();
         //faccio i controlli su quello digitato dall'utente
-        this.controlla();
+        this.sendDati();
         //
     }
 
@@ -31,12 +32,23 @@ class Registrazione extends AbstractService {
         this.nome = document.getElementById("name").value;
         this.cognome = document.getElementById("surname").value;
         this.password = document.getElementById("password").value;
+        this.password2 = document.getElementById("password_confirm").value;
         this.mail = document.getElementById("email").value;
     }
 
     controlla() {
         //se tutto corretto mando al server
-        this.sendDati();
+        if (this.nome == "" || this.cognome == "" || 
+                this.utente == "" || this.mail == "" || 
+                this.passord == "" || this.password2 == "") {
+            alert("Inserire tutti i campi");
+            return false;
+        }
+        if (this.password !== this.password2) {
+            alert("Le password non coincidono")
+            return false;
+        }
+       return true;
     }
 
     buildJson() {
@@ -45,19 +57,20 @@ class Registrazione extends AbstractService {
             "email": this.mail,
             "nome": this.nome,
             "pwd": this.password,
-            "user": this.utente
+            "utente": this.utente
         };
     }
 
     sendDati() {
         //costruisco il json da inviare
-        this.buildJson();
-        //chiamo il servizio
-        this.service.add(this.myJson).
-                then((resp) => {
-                    window.location = this.firstPage;
-                });
-
+        if (this.controlla()) {
+            this.buildJson();
+            //chiamo il servizio
+            this.service.add(this.myJson).
+                    then((resp) => {
+                        window.location = this.firstPage;
+                    });
+        }
     }
 
 }

@@ -57,7 +57,7 @@ public class DocumentiResources {
         System.out.println("file " + is + " titolo " + titolo + " file name " + cdh.getFileName());
         Documento doc = new Documento();
         doc.setTitolo(titolo);
-        //doc.setDocumento(cdh.getFileName());
+
         doc.setDocumento(cdh.getFileName());
         store.save(doc, is);
         return Response.status(200).build();

@@ -81,7 +81,7 @@ class PagDocCondivisi extends AbstractService {
         this.myJson = {};
         ArrJson.map((json) => {
             this.myJson = {
-                utente: json.doc.utente.user,
+                utente: json.doc.utente.utente,
                 id: json.doc.id,
                 titolo: json.doc.titolo,
                 documento: json.doc.documento

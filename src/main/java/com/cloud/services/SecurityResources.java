@@ -69,7 +69,7 @@ public class SecurityResources {
         p.ifPresent(a -> System.out.println(a.getNome()));
         
         JsonObject token = Json.createObjectBuilder().add("token",
-                JWTManager.generateJWTString("token.json", p.get().getUser())).build();
+                JWTManager.generateJWTString("token.json", p.get().getUtente())).build();
         return p.isPresent() ? Response.ok().entity(token).build()
                 : Response.status(Response.Status.UNAUTHORIZED).build();
     }

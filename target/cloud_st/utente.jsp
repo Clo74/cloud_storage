@@ -46,6 +46,15 @@
                             <p class="help-block">Inserisci il tuo cognome</p>
                         </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <!-- E-mail -->
+                        <label class="control-label" for="email">E-mail</label>
+                        <div class="controls">
+                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+                            <p class="help-block">Inserisci la tua E-mail</p>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <!-- Username -->
@@ -53,15 +62,6 @@
                         <div class="controls">
                             <input type="text" readonly="readonly" id="username" name="username" placeholder="" class="input-xlarge">
                             <p class="help-block">Non è possibile modificare lo username</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <!-- E-mail -->
-                        <label class="control-label" for="email">E-mail</label>
-                        <div class="controls">
-                            <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
-                            <p class="help-block">Inserisci la tua E-mail</p>
                         </div>
                     </div>
 
