@@ -60,9 +60,9 @@ public class TagsResources {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public void update(@PathParam("id") int id, Tag tag) {
+    public Tag update(@PathParam("id") int id, Tag tag) {
         tag.setId(id);
-        store.save(tag);
+        return store.save(tag);
     }
 
     @DELETE

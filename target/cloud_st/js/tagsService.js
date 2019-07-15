@@ -44,12 +44,13 @@ export default class TagsService extends AbstractService {
                 'Authorization': "Bearer " + this.token
             }
         })
+                .then((response) => {return response.ok})
                 .catch((res) => console.error(res))
     }
 
     async update(id, json) {
         this.leggiLocSt();
-        await fetch(this.url + "/" + id, {
+        const data = await fetch(this.url + "/" + id, {
             method: 'put',
             headers: {
                 'Accept': 'application/json',
@@ -67,12 +68,12 @@ export default class TagsService extends AbstractService {
                     }
                 })
                 .catch((res) => console.log(res))
-        //return this.res;
+        return data;
     }
 
     async add(json) {
         this.leggiLocSt();
-        await fetch(this.url, {
+        const data = await fetch(this.url, {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -90,7 +91,7 @@ export default class TagsService extends AbstractService {
                     }
                 })
                 .catch(error => console.error(error))
-        //return this.res;
+        return data;
     }
 
 }

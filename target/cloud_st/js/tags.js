@@ -94,11 +94,12 @@ class PagTags extends AbstractService {
     deleteRow(datatable, rowdata, success, error) {
         this.service.delete(rowdata.id)
                 .then(response => {
-                    if (response.ok) {
+                    if (response) {
                         success();
                     } else {
-                        error();
+                        alert("tag utilizzato, non è possibile cancellarlo");
                     }
+                    
                 });
     }
 
