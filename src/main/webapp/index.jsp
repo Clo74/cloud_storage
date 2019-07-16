@@ -21,7 +21,7 @@
 
             </header>
             <article>
-                <div class="wrapper fadeInDown" id ="divLogin" style="display: none">
+                <div class="wrapper fadeInDown" id ="divLogin" >
                     <div id="formContent">
  
                         <form>

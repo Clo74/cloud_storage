@@ -168,13 +168,6 @@ class PagDocumenti extends AbstractService {
                 });
     }
 
-    addRow(datatable, rowdata, success, error) {
-        /*this.service.add(rowdata)
-         .then((JsonRes) => {
-         success(JSON.stringify(JsonRes))
-         });*/
-    }
-
     correggiJsonEdt(Json) {
         this.myArrJson = [];
         if (Json.tags) {
@@ -211,23 +204,24 @@ class PagDocumenti extends AbstractService {
     }
 
     sendFile() {
+        if (this.file.value !== "") {
+            if (this.validateSize()) {
+                var fd = new FormData();
 
-        if (this.validateSize()) {
-            var fd = new FormData();
 
+                fd.append("file", this.file.files[0], this.file.files[0].name);
+                fd.append("titolo", this.titolo.value);
 
-            fd.append("file", this.file.files[0], this.file.files[0].name);
-            fd.append("titolo", this.titolo.value);
-
-            this.service.sendFile(fd)
-                    .then((response) => {
-                        if (response) {
-                            location.reload();
-                        } else
-                        {
-                            alert("Documento non salvato")
-                        }
-                    });
+                this.service.sendFile(fd)
+                        .then((response) => {
+                            if (response) {
+                                location.reload();
+                            } else
+                            {
+                                alert("Documento non salvato")
+                            }
+                        });
+            }
         }
     }
 
