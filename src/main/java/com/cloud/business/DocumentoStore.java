@@ -46,6 +46,8 @@ public class DocumentoStore {
     @Inject
     JsonWebToken token;
 
+    long size;
+    
     //Utente logged;
     @PostConstruct
     public void init() {
@@ -84,7 +86,7 @@ public class DocumentoStore {
         File f = new File(Configuration.DOCUMENT_FOLDER
                 + principal.getName());
 
-        long size = folderSize(f) / 1024 / 1024;
+        size = folderSize(f) / 1024 / 1024;
 
         System.out.println("spazio occupato dalla directory: " + size);
         
