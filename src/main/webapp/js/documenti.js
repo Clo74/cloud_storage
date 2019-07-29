@@ -4,6 +4,7 @@
 import DocumentiService from "./documentiService.js";
 import TagsService from "./tagsService.js";
 import AbstractService from "./AbstractService.js";
+import FillSize from "./FillSize.js";
 
 class PagDocumenti extends AbstractService {
 
@@ -18,7 +19,8 @@ class PagDocumenti extends AbstractService {
         this.file = document.getElementById("file");
 
         this.titolo = document.getElementById("titolo");
-
+        this.fillSize = document.getElementById("myFillSize");
+                
         this.ArrCol = [];
         this.myJson = {};
         this.myArrJson = [];
@@ -55,8 +57,20 @@ class PagDocumenti extends AbstractService {
                             this.arrOpt["'" + v.id + "'"] = v.tag;
                         });
                     }
-                    this.creaTabella();
+                    //this.creaTabella();
+                    this.getSize();
                 });
+    }
+    
+    getSize(){
+        this.service.size().
+                then((lnSize) => {
+                    document.getElementById("spApp").innerHTML = lnSize;
+                    this.fillSize.tot = 1000;
+                    this.fillSize.parz = lnSize;
+                    this.creaTabella();
+        })
+        
     }
 
     createColumn() {
@@ -252,8 +266,8 @@ class PagDocumenti extends AbstractService {
         this.editRow = this.editRow.bind(this);
         this.sendFile = this.sendFile.bind(this);
         this.getFile = this.getFile.bind(this);
-        /*this.addRow = this.addRow.bind(this);
-         */
+        this.getSize = this.getSize.bind(this);
+         
     }
 }
 

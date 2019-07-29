@@ -13,6 +13,9 @@
     <a class="nav-link" href="${pageContext.request.contextPath}/tags.jsp">Elenco Tag</a>
 </li>  
 <li class="nav-item">
+    <a class="nav-link" href="${pageContext.request.contextPath}/tags-com.jsp">Tag web components</a>
+</li>  
+<li class="nav-item">
     <a class="nav-link" href="${pageContext.request.contextPath}/utente.jsp">La tua anagrafica</a>
 
 <li class="nav-item">

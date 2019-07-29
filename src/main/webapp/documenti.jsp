@@ -37,6 +37,9 @@
                                         <input type="button" value="Carica File" class="btn btn-primary" id="butSendFile">
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <fill-size id="myFillSize"></fill-size>
+                                </div>                                  
                             </div>
                         </div>
                         <div class="col">
@@ -53,6 +56,8 @@
                     </div>
                 </form>
                 <hr>
+                <span id="spApp"></span>
+               
                 <div class="container" >
                     <table cellpadding="0" cellspacing="0" border="0"
                            class="dataTable table table-striped" id="documenti" with="100%">

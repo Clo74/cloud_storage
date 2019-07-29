@@ -172,10 +172,30 @@ export default class DocumentiService extends AbstractService {
         return data;
     }
 
+    async size() {
+        this.leggiLocSt();
+        const data = await fetch(this.url + "/space", {
+            method: 'get',
+            headers: {
+                'Authorization': "Bearer " + this.token
+            }
+        })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return "non auth"
+                    }
+                })
+                .catch((res) => console.log(res))
+        return data;
+    }
+    
     bindingAll() {
         this.sendFile = this.sendFile.bind(this);
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
         this.all = this.all.bind(this);
+        this.size = this.size.bind(this);
     }
 }

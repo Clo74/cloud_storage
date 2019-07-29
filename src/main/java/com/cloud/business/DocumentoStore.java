@@ -78,10 +78,20 @@ public class DocumentoStore {
         }
         return length;
     }
+    
+    public long getSize(){
+        File f = new File(Configuration.DOCUMENT_FOLDER
+                + principal.getName());
 
+        size = folderSize(f) / 1024 / 1024;
+        System.out.println("Size restituita: " + size + " per la directory: " + Configuration.DOCUMENT_FOLDER
+                + principal.getName());
+        return size;
+    }
+    
     public Documento save(Documento d, InputStream is) {
-        System.out.println("utente: " + principal.getName());
-        System.out.println("token user: " + token.getName());
+        //System.out.println("utente: " + principal.getName());
+        //System.out.println("token user: " + token.getName());
 
         File f = new File(Configuration.DOCUMENT_FOLDER
                 + principal.getName());

@@ -109,4 +109,10 @@ public class DocumentiResources {
         return saved;
     }    
     
+    //per sapere lo spazio su disco disponibile per un utente
+    @GET
+    @Path("/space")
+    public long spaceDisk(){
+        return store.getSize();
+    }
 }
