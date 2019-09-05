@@ -27,6 +27,9 @@
                     <div>
                         <fill-size id="myFillSize"></fill-size>
                     </div>
+                    <div>
+                        <my-time id="myTime"></my-time>
+                    </div>                    
                 </div>  
                 <div class="container" >
                     <my-hello></my-hello>

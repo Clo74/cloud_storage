@@ -1,0 +1,53 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20-feb-2019, 14.17.36
+    Author     : tss
+*/
+
+.quadrante  {
+    border: solid 1px red;
+    border-radius: 50%;
+    position: relative;
+    top: 10px;
+    left:50px;
+    width: 400px;
+    height: 400px;
+    
+
+}
+.lancetta {
+    position: absolute;
+    top: 0%; 
+    left: 50%;
+    margin: -1px;
+    border: solid 1px black;
+    height: 180px;
+    width: 2px;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    transform-origin: 1px 200px;   
+    
+    animation-name: ruota;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-timing-function: linear;
+    animation-play-state: paused;
+
+}
+.quadrante:hover .lancetta {
+
+    animation-play-state: running;
+}
+
+@keyframes ruota{
+
+    100% {
+
+        transform: rotate(360deg);
+    }
+}
